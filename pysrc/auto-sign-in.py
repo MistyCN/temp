@@ -27,16 +27,14 @@ def DataBase(indb):
 def About():
     print("本项目用于学习数据库操作")
     print("github - https://github.com/MistyCN/temp")
-def init():
-    conn = sqlite3.connect("sqlite.db")
-    global db
-    db = conn.cursor
+
 
 #菜单 MENU
 
 print("=====签到 ver9.26=====")
 try:
-    init()
+    conn = sqlite3.connect("sqlite.db")
+    db = conn.cursor
 except Exception as any:
     print("数据库连接失败"+str(any))
 
