@@ -9,19 +9,44 @@ def CheckAll():
     pass
 def DataBase(indb):
     db = indb
-    dbSelect = int(input("1.初始化数据库"))
+    dbSelect = int(input("1.初始化数据库 2.单条添加学生数据 3.预览数据"))
+
     if dbSelect==1:
         print("初始化执行")
         try:
             db.execute("""CREATE TABLE students( 
                     id INT PRIMARY KEY,  
-                    name VARCHAR(50) NOT NULL
-                    
-        
-                    
+                    name VARCHAR(50) NOT NULL        
                     );""")
         except Exception as any:
             print("初始化错误："+str(any))
+    elif dbSelect==2:
+        print("请输入学号>")
+        inid = input()
+        print("请输入姓名>")
+        inname = input()
+        try:
+            #插入数据
+            inid = int(inid)
+            inname = str(inname)
+            db.execute("INSERT INTO students VALUES(?,?)",(inid,inname))
+            conn.commit()
+            print("插入成功")
+        except Exception as any:
+            print("插入错误："+str(any))
+    elif dbSelect==3:
+        print("预览数据")
+        try:
+            db.execute("SELECT * FROM students")
+            fetchedAll = db.fetchall()
+            print("学号 姓名")
+            for i in fetchedAll:
+                iid = i[0]
+                iname = i[1]
+                print(iid,"  ",iname)
+                
+        except Exception as any:
+            print("预览错误："+str(any))
         
 
 def About():
@@ -32,9 +57,10 @@ def About():
 #菜单 MENU
 
 print("=====签到 ver9.26=====")
+#数据库连接
 try:
     conn = sqlite3.connect("sqlite.db")
-    db = conn.cursor
+    db = conn.cursor()
 except Exception as any:
     print("数据库连接失败"+str(any))
 
